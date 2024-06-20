@@ -1,0 +1,21 @@
+body {
+    @apply font-poppins;
+    background-color: var(--softbackground);
+}
+
+:root {
+    --primary: #9C47D1;
+    --secondary: #C682ED;
+    --lightersecond: #E0B3F9;
+    --softbackground: #F3F6F9;
+    --textblack: #18061E;
+    --accent: #B951F6;
+}
+
+button {
+    background-color: var(--secondary);
+    color: var(--textblack);
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+}

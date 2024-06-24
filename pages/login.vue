@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 definePageMeta({
-  layout: 'guest'
+  layout: 'login'
 })
 </script>
 

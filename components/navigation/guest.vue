@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-around py-3 bg-secondary border-b-4 border-b-primary fixed w-full">
+  <div class="flex justify-around py-3 bg-secondary border-b-4 border-b-primary fixed w-screen z-50">
     <div class="font-righteous text-2xl">
       <NuxtLink :to='"/"'>
         FlipLearn
@@ -22,7 +22,7 @@
       </Transition>
       <Teleport to="body">
         <Transition name="fade" appear v-if="menuOpen">
-          <div class="flex flex-col items-center w-screen py-3 z-50 absolute top-[3.75rem] bg-customPrimary-100">
+          <div class="flex flex-col items-center w-screen py-3 z-50 fixed top-[3.75rem] bg-customPrimary-100">
             <NuxtLink v-for="link in links" :to='`${link.link}`' class="link px-2 py-3 rounded-md w-4/5 text-center" :class=" link.active.value ? 'active': ''" @click="closeMenu">
               {{ link.name }}
             </NuxtLink>

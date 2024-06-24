@@ -1,6 +1,7 @@
 <template>
   <div>
-    
+    <AboutSection1 />
+    <!-- section234 etc -->
   </div>
 </template>
 

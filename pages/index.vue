@@ -1,6 +1,10 @@
 <template>
-  <div class="md:px-2 px-10">
-    <HomeSection1 />
+  <div>
+    <HomeSection1 class="section" />
+    <HomeSection2 class="section" />
+    <HomeSection3 class="section" />
+    <HomeSection4 class="section" />
+    <HomeSection5 class="section" />
   </div>
 </template>
 
@@ -8,8 +12,12 @@
 definePageMeta({
   layout: 'guest'
 })
+
 </script>
 
 <style>
 
+.section {
+  scroll-snap-align: start;
+}
 </style>

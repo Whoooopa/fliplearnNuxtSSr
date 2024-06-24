@@ -29,6 +29,7 @@ export default {
           softbackground: '#F3F6F9',
           textblack: '#18061E',
           accent: '#B951F6',
+          softshade: '#D9D9D9'
         },
         fontFamily: {
           //'Source Serif Pro', serif;

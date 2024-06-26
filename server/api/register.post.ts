@@ -1,30 +1,39 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase-admin/auth";
+import { app, firestore } from '../utils/firebase';
+
 
 export default defineEventHandler(async (event) => {
   // const auth = getAuth();
-  const body = await readBody(event);
-
+  const formdata = await readMultipartFormData(event);
+  // const data = await readFormData(event);
+  // console.log(data);
   // Extract email and password from the parsed body
-  const { email, password } = body;
-  console.log(email, password);
+  let name = '';
+  let email = '';
+  let password = '';
+  let account_type = '';
+  
+  if(formdata){
+    name = formdata[0].data.toString('utf-8');
+    email = formdata[1].data.toString('utf-8');
+    password = formdata[2].data.toString('utf-8');
+    account_type = formdata[3].data.toString('utf-8');
+  }
   // console.log(event._requestBody);
-  // Return a response
-  return {
-    status: 'success',
-    message: 'User registered successfully',
-    data: {
-      email,
-    },
-  };
-  // createUserWithEmailAndPassword(auth, event._requestBodyemail, password)
-  //   .then((userCredential) => {
-  //     // Signed up 
-  //     const user = userCredential.user;
-  //     // ...
-  //   })
-  //   .catch((error) => {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     // ..
-  //   });
+
+  getAuth(app)
+    .createUser({
+      email: email,
+      emailVerified: false,
+      password: password,
+      displayName: name
+    }).then(documentReference => {
+      
+      firestore.collection('users')
+       .doc(documentReference.uid).set({
+          name: name,
+          account_type: account_type
+       })
+    })
+  
 })

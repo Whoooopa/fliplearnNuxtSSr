@@ -4,20 +4,19 @@
     <div class="w-1/2 bg-black"></div>
     <div class="w-1/2 flex justify-center items-center">
       <form class="flex flex-col gap-2" @submit.prevent="register">
-          <div v-for="field in fields" :key="field.name">
+          <div v-for="field in fields" :key="field.name" class="w-80">
             <UInput v-model="field.value.value" 
-            :type="field.name === 'email' ? 
-            'email' : field.visibility?.value ? 
-            '': 'password'"
+            :type="field.type === 'email' ? 
+            'email' : field.type != 'password' ? 
+            '': field.visibility?.value ? '': 'password'"
             :placeholder="field.name"
             :ui="{ icon: { trailing: { pointer: '' } } }"
-            class="relative"> 
+            class="relative"
+            size="xl"> 
               <template #trailing>
                 <ClientOnly>
-                  <Icon v-if="field.name != 'email' " :name="field.visibility?.value ? 'i-fa6-solid:eye-slash': 'i-fa6-solid:eye'" aria-hidden="true" @click="toggleVisibility(field)"/>
-                  <template #fallback>
-                    <Icon name="i-fa6-solid:eye" />
-                  </template>
+                  <Icon v-if="field.visibility " :name="field.visibility?.value ? 'i-fa6-solid:eye-slash': 'i-fa6-solid:eye'" aria-hidden="true" @click="toggleVisibility(field)"/>
+                  <span v-else-if="field.name === 'name'" class="text-[9.5px] pt-4">{{ field.value.value.length }} / 25</span>
                 </ClientOnly>
                 <div class="absolute top-10 -left-40 z-40" v-if="field.name === 'password'">
                   <div class="w-max p-5 rounded-md bg-white shadow-md" v-if="field.value.value != '' && !validations.every(validation => validation.passed.value)" >
@@ -34,6 +33,9 @@
                 </div>
               </template>
             </UInput>
+            <div aria-live="polite" aria-atomic="true" class="text-red-400 text-sm text-wrap" v-if="field.error.value">
+               {{ field.error.value }}
+            </div>
           </div>
           <USelect v-model="accountType" :options="accountTypes" />
           <button class="p-1 bg-slate-400" type="submit">
@@ -46,21 +48,45 @@
 
 <script lang="ts" setup>
 const accountTypes = ['teacher','student'];
-const accountType = ref(accountTypes[0]);
+const accountType = ref(accountTypes[1]);
+
+
+
+const nameRegex = /^(\b\w+\b )*\b\w+\b$/
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/
+
 const fields = [
   {
+    name: 'name',
+    type: 'name',
+    value: ref(''),
+    required: true,
+    test: nameRegex,
+    error: ref('')
+  },
+  {
     name: 'email',
-    value: ref('')
+    type: 'email',
+    value: ref(''),
+    required: true,
+    error: ref('')
   },
   {
     name: 'password',
+    type: 'password',
     value: ref(''),
-    visibility: ref(true)
+    required: true,
+    visibility: ref(true),
+    test: passwordRegex,
+    error: ref('')
   },
   {
     name: 'confirmPassword',
+    type: 'password',
     value: ref(''),
-    visibility: ref(true)
+    required: false,
+    visibility: ref(true),
+    error: ref('')
   },
 ]
 
@@ -68,7 +94,6 @@ type field = {
   name: string,
   value: Ref<string>,
   visibility?: Ref<boolean>
-  
 }
 
 function toggleVisibility(field: field) {
@@ -77,46 +102,89 @@ function toggleVisibility(field: field) {
   }
 }
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/
 
 const validations = [ 
   { 
     condition: 'At least 8 Characters',
-    passed: computed(()=> fields[1].value.value.length >= 8)
+    passed: computed(()=> fields[2].value.value.length >= 8)
   }, {
     condition: 'One uppercase character',
-    passed: computed(()=> /[A-Z]/.test(fields[1].value.value))
+    passed: computed(()=> /[A-Z]/.test(fields[2].value.value))
   }, {
     condition: 'One number eg. 1,2,3',
-    passed: computed(() => /\d/.test(fields[1].value.value))
+    passed: computed(() => /\d/.test(fields[2].value.value))
   }]
 
-const confirmPassword = computed(()=> fields[2].value.value === fields[1].value.value);
+const confirmPassword = computed(()=> fields[3].value.value === fields[2].value.value);
+
+watch(
+  fields[0].value,
+  (newValue, oldValue) => {
+    if(newValue.length > 25){
+      console.log('exceed25');
+      fields[0].value.value = oldValue;
+    }
+  }
+)
+
+const inputsValue = computed(()=> fields.map((field) => field.value.value));
+
+watch(
+  inputsValue,
+  (newValue, oldValue) => {
+    newValue.forEach((newVal, index) => {
+      const oldVal = oldValue[index];
+      if (newVal != oldVal) {
+        fields[index].error.value = '';
+        console.log('what');
+      }
+    });
+  }
+)
+
+
+const publicStore = usePublicStore();
 
 async function register() {
 
-  console.log(fields[1].value.value)
-  const match = fields[1].value.value.match(passwordRegex);
-  console.log(match);
+  const submissionData = new FormData();
+  
+  for (const field of fields) {
+    if (field.value.value.length == 0) {
+        field.error.value = field.name + " is empty";
+        return;
+      }
+    if (field.test && !field.test.test(field.value.value)){
+      
+      if(field.name == 'name'){
+        field.error.value += field.name + " can't have leading or trailing whitespaces";
+        return;
+      }
+      field.error.value = field.name + " doesn't meet requirements";
+        return;
+      }
+  }
+  try {
 
-  // try {
-  //   console.log(fields[0].value.value);
-  //   const res = await fetch('/api/register', {
-  //     method: "POST",
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       'email': `${fields[0].value.value}`,
-  //       'password': `${fields[1].value.value}`
-  //     })
-  //   })
-  //   const data = await res.json();
-  //   console.log(data);
-  // } 
-  // catch (e){
-  //   console.log(e);
-  // }
+    fields.forEach((field) => {
+      if (field.required){
+        submissionData.append(
+              field.name,
+              field.value.value
+            );
+      }
+    })
+    submissionData.append(
+      "account_type", accountType.value
+    )
+    console.log(submissionData);
+    
+
+    publicStore.register(submissionData);
+  } 
+  catch (e){
+    console.log(e);
+  }
 }
 definePageMeta({
   layout: 'login',

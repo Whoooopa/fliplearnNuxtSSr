@@ -1,9 +1,9 @@
 <template>
   <div class="w-20 bg-accent border-r-4 border-r-customPrimary h-screen flex flex-col items-center py-10 gap-5">
     <div v-for="link in type =='teacher' ? teacherLinks: studentLinks">
-      <NuxtLink :to="link.to" v-if="link.to" class="p-2 rounded-md hover:bg-customPrimary-600 relative">
+      <NuxtLink :to="link.to" v-if="link.to" class="p-2 rounded-md relative link">
         <Icon :name="link.iconUri" class="w-8 h-8 text-white " />
-        <Icon :name="link.secondIconUri" class="w-5 h-5 text-softbackground absolute top-[40%] left-[30%]" v-if="link.secondIconUri"/>
+        <Icon :name="link.secondIconUri" class="w-4 h-4 text-white bg-accent absolute top-[55%] left-[55%]" v-if="link.secondIconUri"/>
       </NuxtLink>
       <div v-else class="p-2 rounded-md hover:bg-customPrimary-600 hover:cursor-pointer" @click="handleLogout">
         <Icon :name="link.iconUri" class="w-7 h-7 text-white " />
@@ -48,5 +48,10 @@ async function handleLogout(){
 </script>
 
 <style>
+
+.link:hover > *, .link:hover {
+  background-color: var(--customPrimary-600);
+  border-radius: 0.375rem;
+}
 
 </style>

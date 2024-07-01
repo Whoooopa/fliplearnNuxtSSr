@@ -10,6 +10,19 @@ body {
     --softbackground: #F3F6F9;
     --textblack: #18061E;
     --accent: #B951F6;
+    --tagTosca: #60BAAE;
+    
+    --customPrimary-50: #EBDAF6;
+    --customPrimary-100: #E2CAF2;
+    --customPrimary-200: #D1A9E9;
+    --customPrimary-300: #BF88E1;
+    --customPrimary-400: #AE68D9;
+    --customPrimary-500: #9C47D1;
+    --customPrimary-600: #802DB3;
+    --customPrimary-700: #602286;
+    --customPrimary-800: #401659;
+    --customPrimary-900: #200B2C;
+    --customPrimary-950: #100616;
 }
 
 html {

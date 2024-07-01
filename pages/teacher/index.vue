@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-screen">
     <h2>Server</h2>
     <pre>{{ serverData }}</pre>
 </div>

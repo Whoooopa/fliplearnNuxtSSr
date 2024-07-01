@@ -187,7 +187,7 @@ async function register() {
   }
 }
 definePageMeta({
-  layout: 'login',
+  layout: 'guest',
   
 })
 </script>

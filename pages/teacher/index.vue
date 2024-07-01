@@ -7,6 +7,7 @@
 
 <script lang="ts" setup>
 //test for ssr data fetching
+// console.log(useCookie(useRuntimeConfig().public.authCookieName));
 const { data: serverData } = useFetch('/api/animal');
 </script>
 

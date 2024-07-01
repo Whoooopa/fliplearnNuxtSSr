@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 const ONE_DAY = 60 * 60 * 24 * 1000;
-const ONE_WEEK = ONE_DAY * 7;
+const TWO_WEEK = ONE_DAY * 14; // NUXT_PUBLIC_AUTH_COOKIE_EXPIRES=1209600000 <- nuxt use this instea
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -8,16 +8,16 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // public config
     public: {
-      // authCookieName: "__session",
-      // authCookieExpires: parseInt(ONE_WEEK.toString(), 10),
-      // firebase: {
-      //   apiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
-      //   authDomain: process.env.NUXT_PUBLIC_AUTH_DOMAIN,
-      //   projectId: process.env.NUXT_PUBLIC_PROJECT_ID,
-      //   storageBucket: process.env.NUXT_PUBLIC_STORAGE_BUCKET,
-      //   messagingSenderId: process.env.NUXT_PUBLIC_MESSAGING_SENDER_ID,
-      //   appId: process.env.NUXT_PUBLIC_APP_ID,
-      // }
+      authCookieName: "",
+      authCookieExpires: parseInt(TWO_WEEK.toString(), 10),
+      firebase: {
+        apiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
+        authDomain: process.env.NUXT_PUBLIC_AUTH_DOMAIN,
+        projectId: process.env.NUXT_PUBLIC_PROJECT_ID,
+        storageBucket: process.env.NUXT_PUBLIC_STORAGE_BUCKET,
+        messagingSenderId: process.env.NUXT_PUBLIC_MESSAGING_SENDER_ID,
+        appId: process.env.NUXT_PUBLIC_APP_ID,
+      }
     },
 
     //server side firebase admin

@@ -5,6 +5,7 @@
     <HomeSection3 class="section" />
     <HomeSection4 class="section" />
     <HomeSection5 class="section" />
+    <Footer class="section" />
   </div>
 </template>
 

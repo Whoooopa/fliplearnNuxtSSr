@@ -57,7 +57,8 @@ export const usePublicStore = defineStore({
         cookie.value = null;
         console.log('isSignedOut');
         localStorage.clear();
-        await fetch('api/logout', {
+        
+        await $fetch('/api/logout', {
           method: 'POST'
         }
         )

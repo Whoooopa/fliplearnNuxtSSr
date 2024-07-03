@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 const publicStore = usePublicStore();
 const type = useCookie('type');
-console.log(type);
+// console.log(type);
 const teacherLinks = [
   {
     to: '/teacher',
@@ -24,6 +24,11 @@ const teacherLinks = [
   {
     to: '/teacher/createdeck',
     iconUri: 'i-ph:cards-three',
+    secondIconUri: 'i-material-symbols:add'
+  },
+  {
+    to: '/teacher/createcard',
+    iconUri: 'i-material-symbols:splitscreen-portrait-rounded', //https://icones.js.org/collection/all?s=card+potrait
     secondIconUri: 'i-material-symbols:add'
   },
   {
@@ -43,7 +48,7 @@ const studentLinks = [
 const router = useRouter();
 async function handleLogout(){
   await publicStore.logout();
-  router.push('login');
+  router.push('/login');
 }
 </script>
 

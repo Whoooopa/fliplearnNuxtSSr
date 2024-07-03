@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
     
     // below for subsequent request verification, will move to utils and then eventHandler onReq[util]
     const token = await getAuth(app).verifySessionCookie(cookie, true);
+    console.log(token)
     const user = await getAuth(app).getUser(token.uid);
     const uid = user.uid;
     const type = (await firestore.collection('users').doc(uid).get()).get('account_type');

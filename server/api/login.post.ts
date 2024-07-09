@@ -1,5 +1,4 @@
 import { getAuth } from "firebase-admin/auth";
-import {  } from "firebase-admin/firestore";
 import { app, firestore } from '../utils/firebase';
 
 export default defineEventHandler(async (event) => {

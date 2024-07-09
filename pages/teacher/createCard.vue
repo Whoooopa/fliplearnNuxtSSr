@@ -35,18 +35,20 @@ const decks = computed(() => toRaw(data.value)?.map((deck)=> ({ name: deck.name,
 const deckName = computed(() => decks.value?.find((deck) => deck.value == selectedDeck.value ))
 
 const cardData = reactive({
+  image: null as any | null,
   title: '',
   desc: '',
   question: '',
   answers: [] as Array<{ text: string; truth: boolean }>
 })
 
-const updateCardData = (data: { title: string, desc: string, question: string, answers: Array<{ text: string; truth: boolean }> }) => {
+const updateCardData = (data: { img: any|null,  title: string, desc: string, question: string, answers: Array<{ text: string; truth: boolean }> }) => {
+  
+  cardData.image = data.img ? data.img[0] : null ;
   cardData.title = data.title;
   cardData.desc = data.desc;
   cardData.question = data.question;
   cardData.answers = data.answers;
-  
 }
 
 
@@ -56,7 +58,7 @@ async function createCard () {
 
   for (const [key, value] of Object.entries(cardData)) {
     console.log(key, value);
-    if (key != 'answers') {
+    if (key != 'answers' && key != 'image') {
       if(value === '') return false;
       submissionData.append(key, value.toString());
     }
@@ -70,8 +72,12 @@ async function createCard () {
   }
 
   if(!selectedDeck.value) return;
+
+  
   submissionData.append('answers', JSON.stringify(cardData.answers));
   submissionData.append('deck', selectedDeck.value);
+  
+  if(cardData.image) submissionData.append('img', cardData.image)
   
   try {
     const res = await fetch('/api/teacher/createcard', {

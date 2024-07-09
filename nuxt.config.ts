@@ -68,5 +68,5 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: ['types/*.ts']
-  }
+  },
 })

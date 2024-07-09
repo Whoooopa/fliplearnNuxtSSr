@@ -3,10 +3,9 @@ import { app, firestore } from '../utils/firebase';
 
 
 export default defineEventHandler(async (event) => {
-  // const auth = getAuth();
+  
   const formdata = await readMultipartFormData(event);
-  // const data = await readFormData(event);
-  // console.log(data);
+
   // Extract email and password from the parsed body
   let name = '';
   let email = '';

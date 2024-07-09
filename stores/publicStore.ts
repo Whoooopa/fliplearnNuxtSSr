@@ -68,7 +68,8 @@ export const usePublicStore = defineStore({
       });
     }
 
-  }
+  },
+  persist: true,
 })
 
 

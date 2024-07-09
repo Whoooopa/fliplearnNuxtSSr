@@ -14,7 +14,7 @@
       </div>
       <div class="flex flex-col gap-1 items-center" v-else>
         <div v-for="answer in answers" class="rounded-xl border-customPrimary border-2 w-3/4 bg-softbackground flex flex-start px-3 py-[0.15rem]">
-          <input type="text" disabled v-model="answer.value" class="text-[14px]"/>
+          <input type="text" disabled v-model="answer.text" class="text-[14px]"/>
         </div>
       </div>
     </div>
@@ -42,13 +42,8 @@ defineProps({
     default: '' 
   },
   answers: {
-    type: Array<Ref<String>>,
-    default: [
-      ref(""),
-      ref(""),
-      ref(""),
-      ref("")
-    ]
+    type: Array<answer>,
+    default: []
   }
 })
 </script>

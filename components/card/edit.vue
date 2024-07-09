@@ -2,8 +2,13 @@
   <div class="w-80 h-96 bg-customPrimary-50 rounded-md shadow-md">
     <div class="flex flex-col text-center">
       <div class="w-72 h-40 m-auto pt-4">
-        <div class="bg-black rounded-3xl w-full h-full">
-        </div>
+        <label for="upload-photo" class="w-full h-full">
+          <div class="w-full h-full ">
+            <img :src="imgSrc" alt="upload image"
+            class="w-full h-full object-contain rounded-md bg-white cursor-pointer hover:opacity-70" />
+          </div>
+        </label>
+        <input type="file" class="absolute -z-10 opacity-0" id="upload-photo" accept="image/*" v-on:change="onFileChange"/>
       </div>
       <div class="p-2 md:text-2xl font-semibold h-14" v-if="!isQuestion">
         <input placeholder="Enter a title" class="px-0" v-model="title" @input="emitData" />
@@ -31,6 +36,7 @@
 </template>
 
 <script lang="ts" setup>
+
 defineProps({
   isQuestion: {
     type: Boolean,
@@ -63,14 +69,23 @@ const answers = reactive({
 })
 
 const toggleTruth = (index: number) => {
-  answers.answers[index].truth = !answers.answers[index].truth
-  emitData()
+  answers.answers[index].truth = !answers.answers[index].truth;
+  emitData();
+}
+
+const imgSrc = ref('https://api.iconify.design/material-symbols:imagesmode.svg');
+let file :any|null;
+function onFileChange(e: any) {
+  file = e.target.files || e.dataTransfer.files;
+  imgSrc.value = URL.createObjectURL(file[0]);
+  emitData();
 }
 
 const emit = defineEmits(['update'])
 
 const emitData = () => {
   emit('update', {
+    img: file,
     title: title.value,
     desc: desc.value,
     question: question.value,

@@ -1,9 +1,10 @@
 <template>
   <div class="w-20 bg-accent border-r-4 border-r-customPrimary h-screen flex flex-col items-center py-10 gap-5">
     <div v-for="link in type =='teacher' ? teacherLinks: studentLinks">
-      <NuxtLink :to="link.to" v-if="link.to" class="p-2 rounded-md relative link">
+      <NuxtLink :to="link.to" v-if="link.to" class="p-2 rounded-md relative userlink" :class="link.to === route.path ? 'useractive': ''">
         <Icon :name="link.iconUri" class="w-8 h-8 text-white " />
-        <Icon :name="link.secondIconUri" class="w-4 h-4 text-white bg-accent absolute top-[55%] left-[55%]" v-if="link.secondIconUri"/>
+        <Icon :name="link.secondIconUri" class="w-4 h-4 text-white absolute top-[55%] left-[55%]" 
+        v-if="link.secondIconUri" :class="link.to === route.path ? 'useractive': 'bg-accent'"/>
       </NuxtLink>
       <div v-else class="p-2 rounded-md hover:bg-customPrimary-600 hover:cursor-pointer" @click="handleLogout">
         <Icon :name="link.iconUri" class="w-7 h-7 text-white " />
@@ -32,6 +33,10 @@ const teacherLinks = [
     secondIconUri: 'i-material-symbols:add'
   },
   {
+    to: '/user/profile',
+    iconUri: 'i-material-symbols:account-circle-full'
+  },
+  {
     iconUri: 'i-hugeicons:logout-04'
   },
 ]
@@ -41,11 +46,16 @@ const studentLinks = [
     iconUri: 'i-ph:cards-three'
   },
   {
+    to: '/user/profile',
+    iconUri: 'i-material-symbols:account-circle-full'
+  },
+  {
     iconUri: 'i-hugeicons:logout-04'
   },
 ]
 
 const router = useRouter();
+const route = useRoute();
 async function handleLogout(){
   await publicStore.logout();
   router.push('/login');
@@ -54,7 +64,7 @@ async function handleLogout(){
 
 <style>
 
-.link:hover > *, .link:hover {
+.userlink:hover > *, .userlink:hover, .useractive {
   background-color: var(--customPrimary-600);
   border-radius: 0.375rem;
 }

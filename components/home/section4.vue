@@ -13,10 +13,22 @@
 
 <script lang="ts" setup>
 const answers = [
-  ref("meters"),
-  ref("lbs"),
-  ref("kg"),
-  ref("miles")
+  {
+    text: "meters",
+    truth: true
+  },
+  {
+    text: "lbs",
+    truth: false
+  },
+  {
+    text: "kg",
+    truth: false
+  },
+  {
+    text: "miles",
+    truth: false
+  }
 ]
 </script>
 

@@ -1,16 +1,37 @@
 <template>
-  <div class="w-screen p-10">
+  <div class="w-screen h-screen p-10 flex flex-col gap-4 items-center">
     <span class="text-4xl">My Decks</span>
-    <!-- <pre>{{ serverData }}</pre> -->
-    <Decks 
-    :data="serverData ?? undefined"/>
+    <ReusableCardlayout>
+      <Decks
+      v-if="dataLoaded" 
+      :data="serverData ?? undefined"
+      @edit-deck="handleEditDeck"
+      @delete-deck="handleDeleteDeck"
+      />
+    </ReusableCardlayout>
 </div>
 </template>
 
 <script lang="ts" setup>
-//test for ssr data fetching
-// console.log(useCookie(useRuntimeConfig().public.authCookieName));
-const { data: serverData } = useFetch<Array<personalizedDeck>>('/api/teacher/personalizedDecks');
+const { data: serverData } = await useFetch<Array<personalizedDeck>>('/api/teacher/personalizedDecks');
+const dataLoaded = ref(false);
+
+const router = useRouter();
+const publicStore = usePublicStore();
+
+function handleEditDeck(deckId: String){
+  router.push('teacher/editDeck/'+ deckId);
+}
+function handleDeleteDeck(deckId: String){
+  console.log('delete ' + deckId);
+  // publicStore.$patch({
+  //   editCardId: deckId
+  // })
+  // router.push('teacher/editDeck');
+}
+onMounted(()=>{
+  dataLoaded.value = true;
+})
 </script>
 
 <style>

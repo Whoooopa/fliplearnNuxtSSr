@@ -81,7 +81,7 @@ function closeMenu() {
 }
 </script>
 
-<style>
+<style scoped>
 @media (hover: hover), (-ms-high-contrast:none) {
 
   .link {

@@ -22,12 +22,20 @@ const publicStore = usePublicStore();
 function handleEditDeck(deckId: String){
   router.push('teacher/editDeck/'+ deckId);
 }
-function handleDeleteDeck(deckId: String){
+async function handleDeleteDeck(deckId: String){
   console.log('delete ' + deckId);
-  // publicStore.$patch({
-  //   editCardId: deckId
-  // })
-  // router.push('teacher/editDeck');
+  try {
+    await fetch('/api/teacher/deletedeck', {
+        method: "POST",
+        body: deckId.toString()
+      })
+  }
+  catch (e) {
+    console.log(e)
+  }
+  finally { // default param is window.location.pathname, re-request path to trigger useFetch
+    reloadNuxtApp()
+  }
 }
 onMounted(()=>{
   dataLoaded.value = true;

@@ -2,7 +2,11 @@
   <div class="w-80 h-96 bg-customPrimary-50 rounded-md shadow-md">
     <div class="flex flex-col text-center">
       <div class="w-72 h-40 m-auto pt-4">
-        <div class="bg-black rounded-3xl w-full h-full">
+        <div class="w-full h-full" v-if="imgUrl">
+          <img :src="imgUrl" alt="upload image"
+          class="w-full h-full object-contain rounded-md bg-white cursor-pointer hover:opacity-70"/>
+        </div>
+        <div class="bg-black rounded-3xl w-full h-full" v-else>
         </div>
       </div>
       <div class="p-2 md:text-2xl font-semibold" v-if="!isQuestion">{{ title }}</div>
@@ -44,6 +48,10 @@ defineProps({
   answers: {
     type: Array<answer>,
     default: []
+  },
+  imgUrl: {
+    type: String,
+    required: false
   }
 })
 </script>

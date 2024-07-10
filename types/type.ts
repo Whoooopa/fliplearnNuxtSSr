@@ -10,11 +10,16 @@ export type answer = {
 }
 
 export type card = {  
-    title: String,
-    desc: String,
-    question: String,
+    title: string,
+    desc: string,
+    question: string,
     answers: Array<answer>,
-    imgUrl?: String,
+    imgUrl?: string,
+}
+
+export type cardDoc = {
+    docId: string,
+    card: card
 }
 
 export type user = {
@@ -27,7 +32,7 @@ export type deck = {
     name: String,
     owner: String,
     tags: Array<String>,
-    cards?: Array<card>
+    cards?: Array<cardDoc>
 }
 
 export type tag = {

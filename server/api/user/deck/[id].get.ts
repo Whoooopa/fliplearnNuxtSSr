@@ -1,4 +1,4 @@
-import { card } from "~/types/type";
+import { card, cardDoc } from "~/types/type";
 import { firestore } from "../../../utils/firebase"
 
 export default defineEventHandler(async (event) => {
@@ -21,11 +21,16 @@ export default defineEventHandler(async (event) => {
     return { name, tags, owner };
   }
   else {
-    let cards: card[] = []
+    let cards: cardDoc[] = []
     cardsSnapshot.forEach(doc => {
       
       const card = doc.data() as card;
-      cards.push(card);
+      const cardDoc: cardDoc = {
+        docId: doc.id,
+        card: card,
+      }
+    
+      cards.push(cardDoc);
     })
 
     return { name, tags, owner, cards };

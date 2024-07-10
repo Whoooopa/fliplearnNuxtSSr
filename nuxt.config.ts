@@ -56,7 +56,7 @@ export default defineNuxtConfig({
         stylePath: 'css/google-fonts.css',
 
     },
-  ], "@nuxt/ui", '@pinia/nuxt'],
+  ], "@nuxt/ui", '@pinia/nuxt', "vue3-carousel-nuxt"],
   css: ["~/assets/css/main.css","~/assets/css/google-fonts.css"],
   tailwindcss: {
     configPath: '@/tailwind.config.ts',
@@ -69,4 +69,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['types/*.ts']
   },
+  carousel: {
+    prefix: 'V3'
+  }
 })

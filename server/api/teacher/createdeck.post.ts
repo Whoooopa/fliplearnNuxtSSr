@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
   }
   
   const uid = getCookie(event, 'uid');
+  const type = getCookie(event, 'type');
   if(uid){
     const teacherName = (await firestore.collection('users').doc(uid).get()).get('name');
     const docId = firestore.collection('decks').doc() // generate random id-> deck between 2 collections have same id to ease editing
@@ -26,11 +27,12 @@ export default defineEventHandler(async (event) => {
       owner: teacherName,
       uid: uid
     })
-
+    const headers =  new Headers({
+      "Cookie": `uid=${uid}`,
+    });
+    headers.append("Cookie", `type=${type}`);
     const personalizedDoc = await $fetch('/api/teacher/personalizedDecks',
-      { headers: {
-        'Cookie' : `uid=${uid}`
-      } }
+      { headers: headers }
     );
     // limit to 15 per user
     // if array is empty 

@@ -56,10 +56,20 @@ const studentLinks = [
 
 const router = useRouter();
 const route = useRoute();
+const path = computed(()=> route.path)
 async function handleLogout(){
   await publicStore.logout();
   router.push('/login');
 }
+
+watch(path, 
+  (newValue, oldValue)=>{
+    
+  },
+  {
+    deep: true
+  }
+)
 </script>
 
 <style>

@@ -24,7 +24,11 @@ export default defineEventHandler(async (event) => {
     let cards: cardDoc[] = []
     cardsSnapshot.forEach(doc => {
       
-      const card = doc.data() as card;
+      const cardData = doc.data() as card;
+      const card: card = {
+        ...cardData, 
+        isQuestion: false
+      };
       const cardDoc: cardDoc = {
         docId: doc.id,
         card: card,

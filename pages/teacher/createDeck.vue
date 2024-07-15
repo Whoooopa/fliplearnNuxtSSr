@@ -5,11 +5,18 @@
       :errors="errors">
         <button class="w-20 h-10 p-2" type="submit">Create</button>
       </ReusableDeckForm>
+      <ReusableModal
+      v-if="openModal" 
+      :prompt="'Deck Created Successfuly'"
+      :action="'Close'"
+      @modal-confirmation="openModal = false"
+      />
     </ReusableCardlayout>
   </form>
 </template>
 
 <script lang="ts" setup>
+const openModal = ref(false);
 const errors = reactive([
   { field: 'deck', error: '' },
   { field: 'tags', error: '' }
@@ -50,11 +57,13 @@ async function createDeck(){
           body: submissionData
         })
         console.log(res);
+        openModal.value = true;
       } 
       catch (e){
         console.log(e);
       }
     }
+
 </script>
 
 <style>

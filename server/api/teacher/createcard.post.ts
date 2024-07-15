@@ -49,11 +49,11 @@ export default defineEventHandler(async (event) => {
       desc: data.desc.toString(),
       question: data.question.toString(),
       answers: JSON.parse(data.answers.toString()),
-      imgUrl: signedUrls[0]
+      imgUrl: signedUrls[0],
+      bucketPath: fileName,
     }
 
     const deckId = data.deck.toString()
-    // console.log(data.deck.toString())
     firestore.collection('decks').doc(deckId).collection('cards').doc().set({
       ...card
     })

@@ -23,10 +23,17 @@
         Add to {{ deckName?.name }}
       </button> 
     </div>
+    <ReusableModal
+    v-if="openModal" 
+    :prompt="'Card created successfuly'"
+    :action="'Close'"
+    @modal-confirmation="openModal = false"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
+const openModal = ref(false);
 const isFlipped = ref(false);
 const selectedDeck = ref('');
 
@@ -84,6 +91,7 @@ async function createCard () {
           method: "POST",
           body: submissionData
         })
+    openModal.value = true;
   }
   catch(e){
     console.log(e)

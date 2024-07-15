@@ -2,11 +2,27 @@
   <div class="w-screen h-screen p-10 flex flex-col gap-4 items-center">
     <span class="text-4xl">My Decks</span>
     <ReusableCardlayout>
+      <SkeletonDeck
+      v-if="!dataLoaded"
+      />
       <Decks
-      v-if="dataLoaded" 
-      :data="serverData ?? undefined"
+      v-else-if="serverData?.length" 
+      :data="serverData"
       @edit-deck="handleEditDeck"
       @delete-deck="handleDeleteDeck"
+      />
+      <div 
+      class="flex flex-col gap-10 w-full h-full justify-center items-center"
+      v-else>
+        <span>No Deck</span>
+        <button class="h-10 py-2 px-4" type="button" @click="navigateTo('/teacher/createdeck')">Create Deck</button>
+      </div>
+      <ReusableModal
+      prompt="Are you sure ?"
+      action="Delete"
+      action2="Cancel"
+      v-if="tryDelete"
+      @modal-confirmation="handleModal"
       />
     </ReusableCardlayout>
 </div>
@@ -15,19 +31,33 @@
 <script lang="ts" setup>
 const { data: serverData } = await useFetch<Array<personalizedDeck>>('/api/teacher/personalizedDecks');
 const dataLoaded = ref(false);
-
 const router = useRouter();
-const publicStore = usePublicStore();
 
-function handleEditDeck(deckId: String){
+function handleEditDeck(deckId: String) {
   router.push('teacher/editDeck/'+ deckId);
 }
-async function handleDeleteDeck(deckId: String){
-  console.log('delete ' + deckId);
+
+const tryDelete = ref(false);
+const deckIdToDelete = ref('');
+
+function handleModal(choice: string) {
+  if(choice == 'cancel') {
+    tryDelete.value = false;
+    return;
+  }
+  deleteDeck()
+}
+
+function handleDeleteDeck(deckId: string) {
+  tryDelete.value = true;
+  deckIdToDelete.value = deckId;
+}
+
+async function deleteDeck() {
   try {
     await fetch('/api/teacher/deletedeck', {
         method: "POST",
-        body: deckId.toString()
+        body: deckIdToDelete.value
       })
   }
   catch (e) {

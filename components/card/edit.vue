@@ -2,13 +2,13 @@
   <div class="w-80 h-96 bg-customPrimary-50 rounded-md shadow-md">
     <div class="flex flex-col text-center">
       <div class="w-72 h-40 m-auto pt-4">
-        <label for="upload-photo" class="w-full h-full">
+        <label :for="prevId" class="w-full h-full">
           <div class="w-full h-full ">
             <img :src="imgSrc" alt="upload image"
             class="w-full h-full object-contain rounded-md bg-white cursor-pointer hover:opacity-70" />
           </div>
         </label>
-        <input type="file" class="absolute -z-10 opacity-0" id="upload-photo" accept="image/*" v-on:change="onFileChange"/>
+        <input type="file" class="absolute -z-10 opacity-0" :id="prevId" accept="image/*" v-on:change="onFileChange"/>
       </div>
       <div class="p-2 md:text-2xl font-semibold h-14" v-if="!isQuestion">
         <input placeholder="Enter a title" class="px-0" v-model="title" @input="emitData" />
@@ -47,9 +47,12 @@ const props = defineProps({
   prevQuestion: String,
   prevAnswers: Array<answer>,
   prevUrl: String,
-  prevId: String
+  prevId: String,
+  resetData: {
+    type: Boolean,
+    default: false
+  },
 })
-
 const title = ref(props.prevTitle ?? '');
 const desc = ref(props.prevDesc ?? '');
 const question = ref(props.prevQuestion ?? '');
@@ -74,17 +77,41 @@ const answers = reactive({
   ] as answer[]
 })
 
+const imgSrc = ref(props.prevUrl ?? 'https://api.iconify.design/material-symbols:imagesmode.svg');
+// for teacher/editDeck/[id] 
+const route = useRoute();
+if(route.path.includes('/teacher/editDeck')){
+
+  watch(props, 
+    (newValue, oldValue) => {
+      if(newValue?.isQuestion != oldValue?.isQuestion) {
+        //dont reset data upon flip button click
+        title.value = props.prevTitle ?? '';
+        desc.value = props.prevDesc ?? '';
+        question.value = props.prevQuestion ?? '';
+        answers.answers.forEach((answer, index)=>{
+          answer.text = props.prevAnswers![index].text ?? '';
+          answer.truth = props.prevAnswers![index].truth ?? false;
+        })
+        imgSrc.value = props.prevUrl ?? 'https://api.iconify.design/material-symbols:imagesmode.svg';
+      }
+    },
+    { deep: true,
+      immediate: true,
+     }
+  )
+}
+
 const toggleTruth = (index: number) => {
   answers.answers[index].truth = !answers.answers[index].truth;
   emitData();
 }
 
-console.log(props.prevUrl);
-const imgSrc = ref(props.prevUrl ?? 'https://api.iconify.design/material-symbols:imagesmode.svg');
 let file :any|null;
 function onFileChange(e: any) {
   file = e.target.files || e.dataTransfer.files;
   imgSrc.value = URL.createObjectURL(file[0]);
+  console.log(imgSrc.value);
   emitData();
 }
 

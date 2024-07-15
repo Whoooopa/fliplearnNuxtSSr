@@ -15,6 +15,9 @@ export type card = {
     question: string,
     answers: Array<answer>,
     imgUrl?: string,
+    isQuestion?: boolean,
+    img?: any,
+    bucketPath?: string
 }
 
 export type cardDoc = {

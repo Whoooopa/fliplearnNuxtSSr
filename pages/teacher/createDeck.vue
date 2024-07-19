@@ -48,7 +48,7 @@ async function createDeck(){
       errors[1].error = ""
 
       const submissionData = new FormData();
-      const submissionTags = deckData.tags.map((tag)=>{ return tag['name']});
+      const submissionTags = deckData.tags.map((tag)=>{ return tag['name'].toLowerCase()});
       submissionData.append('deckName', deckData.name);
       submissionData.append('tags', JSON.stringify(submissionTags));
       try {

@@ -1,5 +1,6 @@
 import { firestore } from '../../utils/firebase';
-import { FieldValue } from 'firebase-admin/firestore'
+import { FieldValue } from 'firebase-admin/firestore';
+import generateKeyWords from '../../utils/getKeywords';
 
 export default defineEventHandler(async (event) => {
 
@@ -10,7 +11,6 @@ export default defineEventHandler(async (event) => {
   
   if(formdata){
     deckName = formdata[0].data.toString('utf-8');
-    console.log(JSON.parse(formdata[1].data.toString('utf-8')))
     tags = JSON.parse(formdata[1].data.toString('utf-8'));
   }
   
@@ -21,11 +21,17 @@ export default defineEventHandler(async (event) => {
     const docId = firestore.collection('decks').doc() // generate random id-> deck between 2 collections have same id to ease editing
     // decks will be queried for search page
     // personalizedDecks will be queried index page after login
+    const keywords = generateKeyWords(deckName);
+    const keyvalueTags: { [key: string]: boolean } = tags.reduce(function(map, obj) {
+      map[obj] = true;
+      return map;
+    }, {});
     docId.set({
       name: deckName,
-      tags: tags,
+      tags: keyvalueTags,
       owner: teacherName,
-      uid: uid
+      uid: uid,
+      keywords: keywords,
     })
     const headers =  new Headers({
       "Cookie": `uid=${uid}`,
@@ -36,7 +42,6 @@ export default defineEventHandler(async (event) => {
     );
     // limit to 15 per user
     // if array is empty 
-    console.log(personalizedDoc.length)
     if (personalizedDoc.length < 15) {
       firestore.collection('personalizedDecks').doc(uid).set({
         decks: FieldValue.arrayUnion(
@@ -44,18 +49,19 @@ export default defineEventHandler(async (event) => {
           { 
             deckId: docId.id,
             name: deckName,
-            tags: tags
+            tags: tags.sort()
           }
         ])
       },
       { merge: true })
     }
 
-
+    // for fetching tags in /search
+    firestore.collection('tags').doc('YxHwDHCyXkdwoZ28hWDE').update({
+      tags: FieldValue.arrayUnion(...tags)
+    })
     
   } else {
     console.log('error');
   }
-  
-  return 'Hello Nitro'
 })

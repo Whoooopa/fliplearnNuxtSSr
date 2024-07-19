@@ -11,14 +11,15 @@ export default defineEventHandler(async (event) => {
   const deck = (await ref.get()).data();
   
   const name = deck?.name;
-  const tags = deck?.tags;
+  const tagsMap = deck?.tags;
+  const tagsArray = Object.keys(tagsMap).filter(tag => tagsMap[tag]);
   firestore.recursiveDelete(ref); // delete doc and subcollections
   
   firestore.collection('personalizedDecks').doc(uid).update({
     decks: FieldValue.arrayRemove({ // remove the deck object
       deckId: deckId,
       name: name,
-      tags: tags 
+      tags: tagsArray.sort() 
     })
   })
 })

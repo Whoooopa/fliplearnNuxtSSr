@@ -17,9 +17,9 @@
           <div class="w-full flex flex-row md:gap-20">
             <div class="w-40 h-40">
               <label for="upload-photo" class="w-full h-full">
-                <div class="w-full h-full ">
+                <div class="w-full h-full">
                   <img :src="imgSrc" alt="upload image"
-                  class="w-full h-full object-contain rounded-full cursor-pointer hover:opacity-70" />
+                  class="w-full h-full object-contain rounded-full cursor-pointer hover:opacity-70" v-if="dataLoaded"/>
                 </div>
               </label>
               <input type="file" class="absolute -z-10 opacity-0" id="upload-photo" accept="image/*" v-on:change="onFileChange" />
@@ -59,7 +59,7 @@ definePageMeta({
 })
 const dataLoaded = ref(false);
 const { data: user } = await useFetch<user>('/api/user/user');
-const imgSrc = useState('imgsrc', () => 'https://api.iconify.design/material-symbols:account-circle-full.svg');
+const imgSrc = ref('https://api.iconify.design/material-symbols:account-circle-full.svg');
 const name = useState('username', () => '')
 let nameLength = 0;
 console.log(user.value)
@@ -67,8 +67,9 @@ onMounted(()=>{
   console.log(user.value?.name)
   name.value = toRaw(user.value.name)
   if(user.value.profileUrl.length != 0){
-    imgSrc.value = user.value.profileUrl;
+    imgSrc.value = user.value.profileUrl?.toString() ?? 'https://api.iconify.design/material-symbols:account-circle-full.svg';
   }
+  console.log(imgSrc.value);
   nameLength = computed(()=> name.value.length);
   dataLoaded.value = true;
 })

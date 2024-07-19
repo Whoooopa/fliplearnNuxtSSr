@@ -135,7 +135,7 @@ onMounted(() => {
   const deckData = toRaw(deck.value)
   if(deckData){
     currentDeckName.value = deckData.name.toString();
-    currentTags.value = deckData.tags.map((tag)=> tag.toString());
+    currentTags.value = deckData.tags;
     currentOwner.value = deckData.owner.toString();
     deckData.cards?.forEach((card)=>{
       currentCards.push(card);
@@ -201,7 +201,7 @@ async function editDeck(){
     // to do edit deck here
 
     const submissionData = new FormData();
-    const submissionTags = deckData.tags.map((tag)=>{ return tag['name']});
+    const submissionTags = deckData.tags.map((tag)=>{ return tag['name'].toLowerCase()});
     submissionData.append('deckName', deckData.name);
     submissionData.append('tags', JSON.stringify(submissionTags));
     // deckId for update ref

@@ -47,7 +47,10 @@ const props = defineProps({
   prevQuestion: String,
   prevAnswers: Array<answer>,
   prevUrl: String,
-  prevId: String,
+  prevId: {
+    type: String,
+    default: 'id'
+  },
   resetData: {
     type: Boolean,
     default: false

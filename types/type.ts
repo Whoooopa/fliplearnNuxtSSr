@@ -32,9 +32,10 @@ export type user = {
 }
 
 export type deck = {
-    name: String,
-    owner: String,
-    tags: Array<String>,
+    id?: string,
+    name: string,
+    owner: string,
+    tags: string[],
     cards?: Array<cardDoc>
 }
 

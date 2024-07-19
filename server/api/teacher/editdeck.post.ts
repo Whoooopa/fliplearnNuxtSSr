@@ -1,5 +1,6 @@
 import { firestore } from '../../utils/firebase';
-import { FieldValue } from 'firebase-admin/firestore'
+import { FieldValue } from 'firebase-admin/firestore';
+import generateKeyWords from '../../utils/getKeywords';
 
 export default defineEventHandler(async (event) => {
 
@@ -19,11 +20,17 @@ export default defineEventHandler(async (event) => {
   
   const uid = getCookie(event, 'uid');
   if(!uid) return; 
-
+  
+  const keywords = generateKeyWords(deckName);
+  const keyvalueTags: { [key: string]: boolean } = tags.reduce(function(map, obj) {
+    map[obj] = true;
+    return map;
+  }, {});
   const docId = firestore.collection('decks').doc(deckId)
   docId.update({
     name: deckName, //update name and tags only
-    tags: tags,
+    tags: keyvalueTags,
+    keywords: keywords
   })
   
   firestore.collection('personalizedDecks').doc(uid).update({
@@ -39,9 +46,14 @@ export default defineEventHandler(async (event) => {
       { 
         deckId: deckId,
         name: deckName,
-        tags: tags
+        tags: tags.sort()
       }
     ])
   },
   { merge: true })
+
+  // for fetching tags in /search
+  firestore.collection('tags').doc('YxHwDHCyXkdwoZ28hWDE').update({
+    tags: FieldValue.arrayUnion(...tags)
+  })
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="w-20 bg-accent border-r-4 border-r-customPrimary h-screen flex flex-col items-center py-10 gap-5">
-    <div v-for="link in type =='teacher' ? teacherLinks: studentLinks">
+    <div v-for="link in type =='teacher' ? [...teacherLinks,...commonLinks]: [...studentLinks,...commonLinks]">
       <NuxtLink :to="link.to" v-if="link.to" class="p-2 rounded-md relative userlink" :class="link.to === route.path ? 'useractive': ''">
         <Icon :name="link.iconUri" class="w-8 h-8 text-white " />
         <Icon :name="link.secondIconUri" class="w-4 h-4 text-white absolute top-[55%] left-[55%]" 
@@ -31,19 +31,19 @@ const teacherLinks = [
     to: '/teacher/createcard',
     iconUri: 'i-material-symbols:splitscreen-portrait-rounded', //https://icones.js.org/collection/all?s=card+potrait
     secondIconUri: 'i-material-symbols:add'
-  },
-  {
-    to: '/user/profile',
-    iconUri: 'i-material-symbols:account-circle-full'
-  },
-  {
-    iconUri: 'i-hugeicons:logout-04'
-  },
+  }
 ]
 const studentLinks = [
   {
     to: '/student',
     iconUri: 'i-ph:cards-three'
+  }
+]
+
+const commonLinks = [
+  {
+    to: '/user/search',
+    iconUri: 'i-mdi:magnify'
   },
   {
     to: '/user/profile',

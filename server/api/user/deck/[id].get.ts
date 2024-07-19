@@ -10,11 +10,13 @@ export default defineEventHandler(async (event) => {
   if(!deckId) return;
 
   const deck = await firestore.collection('decks').doc(deckId).get();
-  if(uid != deck.data()?.uid) return;
   
   const name = deck.data()?.name;
-  const tags = deck.data()?.tags;
+  const tagsMap = deck.data()?.tags;
   const owner = deck.data()?.owner;
+
+  let tags: string[] = [];
+  tags = Object.keys(tagsMap).filter(tag => tagsMap[tag]);
 
   const cardsSnapshot = await firestore.collection('decks').doc(deckId).collection('cards').get();
   if (cardsSnapshot.empty) {

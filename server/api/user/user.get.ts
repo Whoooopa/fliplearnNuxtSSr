@@ -3,7 +3,6 @@ import { firestore } from "../../utils/firebase"
 export default defineEventHandler(async (event) => {
   
   const uid = getCookie(event, 'uid');
-  console.log(uid)
   if(!uid) return;
   const user = await firestore.collection('users').doc(uid).get()
   const name = user.data()?.name;

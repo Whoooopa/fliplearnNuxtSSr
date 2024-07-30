@@ -5,8 +5,8 @@ export type personalizedDeck = {
 }
 
 export type answer = {
-    text: String,
-    truth: Boolean
+    text: string,
+    truth: boolean
 }
 
 export type card = {  

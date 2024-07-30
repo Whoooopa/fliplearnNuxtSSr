@@ -16,7 +16,6 @@
 <script lang="ts" setup>
 const publicStore = usePublicStore();
 const type = useCookie('type');
-// console.log(type);
 const teacherLinks = [
   {
     to: '/teacher',

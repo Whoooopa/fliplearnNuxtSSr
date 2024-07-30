@@ -17,9 +17,8 @@
         {{ prevDesc }}
       </p>
       <div class="flex flex-col gap-1 items-center" v-else>
-        <div v-for="(answer, index) in answers.answers" class="rounded-xl border-customPrimary border-2 w-full bg-softbackground flex flex-start px-3 py-[0.15rem] items-center gap-2">
-          <input type="text" v-model="answer.text" class="text-[14px] w-11/12 px-2" 
-          disabled/>
+        <div v-for="(answer, index) in answers.answers" class="rounded-xl border-customPrimary border-2 w-full flex flex-start px-3 py-[0.15rem] items-center gap-2" :class="revealAnswerClass.answersClass[index].text" @click="handleAnswer(answer, index)">
+          <span class="text-[14px] w-48 px-2" >{{ answer.text }}</span>
         </div>
       </div>
     </div>
@@ -34,6 +33,10 @@ const props = defineProps({
   isQuestion: {
     type: Boolean,
     default: false
+  },
+  isQuiz: {
+    type: Boolean,
+    default: false,
   },
   prevTitle: String,
   prevDesc: String,
@@ -68,6 +71,48 @@ const answers = reactive({
 })
 
 const imgSrc = ref(props.prevUrl ?? 'https://api.iconify.design/material-symbols:imagesmode.svg');
+const revealAnswerClass = reactive({
+  answersClass: [
+    {
+      text: 'cursor-pointer bg-softbackground',
+    },
+    {
+      text: 'cursor-pointer bg-softbackground',
+    },
+    {
+      text: 'cursor-pointer bg-softbackground',
+    },
+    {
+      text: 'cursor-pointer bg-softbackground',
+    }
+  ] 
+})
+
+const isClicked = ref(false);
+const emits = defineEmits(['guess'])
+function handleAnswer(answer: answer, index: number) {
+  if(props.isQuiz && !isClicked.value){
+    revealAnswerClass.answersClass.forEach((answer, idx)=>{
+      answer.text = answers.answers[idx].truth ? 'bg-green-500': 'bg-red-500'
+    })
+    emits('guess', answer);
+    isClicked.value = true;
+  }
+}
+watch(props,
+()=>{
+  imgSrc.value = props.prevUrl ?? '';
+  answers.answers.forEach((answer, idx)=>{
+    answer.text = props.prevAnswers![idx].text;
+    answer.truth = props.prevAnswers![idx].truth;
+  })
+  isClicked.value = false;
+  
+  revealAnswerClass.answersClass.forEach((answer, idx)=>{
+      answer.text = 'cursor-pointer bg-softbackground'
+  })
+},  
+{ deep:true })
 </script>
 
 <style scoped>

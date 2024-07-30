@@ -114,7 +114,6 @@ let file :any|null;
 function onFileChange(e: any) {
   file = e.target.files || e.dataTransfer.files;
   imgSrc.value = URL.createObjectURL(file[0]);
-  console.log(imgSrc.value);
   emitData();
 }
 

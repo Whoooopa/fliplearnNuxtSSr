@@ -8,6 +8,7 @@
       <Decks
       v-else-if="serverData?.length" 
       :data="serverData"
+      @study-deck="handleStudyDeck"
       />
       <div 
       class="flex flex-col gap-10 w-full h-full justify-center items-center"
@@ -27,6 +28,10 @@ console.log(serverData)
 onMounted(()=>{
   dataLoaded.value = true;
 })
+
+function handleStudyDeck(deckId: String) {
+  router.push(`/student/study/${deckId}`);
+}
 </script>
 
 <style>

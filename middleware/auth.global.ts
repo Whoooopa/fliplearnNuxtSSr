@@ -18,7 +18,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
         const typeReg = /type=([^;]*)/
         const typeMatch = typeReg.exec(cookies.cookie ??  '')
         const type = typeMatch ? typeMatch[1] : null;
-        // console.log(type);
         if(type && !to.path.includes(type!)){
 
             if(!to.path.includes('user')){

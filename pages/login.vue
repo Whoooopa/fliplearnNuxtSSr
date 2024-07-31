@@ -1,7 +1,16 @@
 <template>
 
   <div class="h-screen flex flex-row">
-    <div class="w-1/2 bg-black"></div>
+    <div class="w-1/2 flex justify-center items-center bg-white">
+      <CardPreview 
+      
+       :prevTitle="quizData.prevTitle"
+       :prevDesc="quizData.prevDesc"
+       :prevQuestion="quizData.prevQuestion"
+       :prevAnswers="quizData.prevAnswers"
+       :prevUrl="quizData.prevUrl"
+      />
+    </div>
     <div class="w-1/2 flex justify-center items-center">
       <form class="flex flex-col gap-2" @submit.prevent="register">
           <div v-for="field in fields" :key="field.name" class="w-80">
@@ -33,6 +42,19 @@
 
 <script lang="ts" setup>
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/
+
+const quizData = {
+        prevTitle: "Cell Structure",
+        prevDesc: "Cells are the basic unit of life. Remember, cell theory explains the origins and properties of cells.",
+        prevQuestion: "Which of the following is not a part of the cell theory?",
+        prevAnswers: [
+            { truth: false, text: "All living things are made up of cells." },
+            { truth: true, text: "Cells can arise spontaneously from non-living material." },
+            { truth: false, text: "Cells are the basic unit of structure and function in living things." },
+            { truth: false, text: "All cells come from pre-existing cells." }
+        ],
+        prevUrl: "/cell.jpeg",
+    };
 
 const fields = [
   {

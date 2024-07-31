@@ -53,10 +53,10 @@ export default defineEventHandler(async (event) => {
   
     
     streamFileUpload().catch(console.error);
-    file.getSignedUrl({
+    const signedUrls = await file.getSignedUrl({
       action: 'read',
       expires: '03-09-2491',
-    }).then(signedUrls => {
+    })
       // signedUrls[0] contains the file's public URL
       
       const newUserData :user = {
@@ -71,7 +71,6 @@ export default defineEventHandler(async (event) => {
       }, {
         merge: true
       })
-    });
   } else {
 
     const newUserData :user = {

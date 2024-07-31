@@ -40,14 +40,17 @@ export default defineEventHandler(async (event) => {
   const deck = await $fetch('/api/user/deck/'+deckId,
     { headers: headers }
   );
-  firestore.collection('personalizedDecks').doc(uid).update({
+  console.log(deckId)
+  console.log(deck.name)
+  console.log(deck.tags)
+  await firestore.collection('personalizedDecks').doc(uid).update({
     decks: FieldValue.arrayRemove({ // remove the deck object
       deckId: deckId,
       name: deck.name,
       tags: deck.tags.sort() 
     })
   })
-  firestore.collection('personalizedDecks').doc(uid).set({
+  await firestore.collection('personalizedDecks').doc(uid).set({
     decks: FieldValue.arrayUnion( // add a new object with new values
       ...[
       { 

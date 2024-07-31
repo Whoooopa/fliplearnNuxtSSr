@@ -49,26 +49,25 @@ export default defineEventHandler(async (event) => {
   
     }
     streamFileUpload().catch(console.error);
-    file.getSignedUrl({
+    const signedUrls = await file.getSignedUrl({
       action: 'read',
       expires: '03-09-2491',
-    }).then(signedUrls => {
+    })
       // signedUrls[0] contains the file's public URL
-      const card :card = {
-        title: data.title.toString(),
-        desc: data.desc.toString(),
-        question: data.question.toString(),
-        answers: JSON.parse(data.answers.toString()),
-        imgUrl: signedUrls[0],
-        bucketPath: fileName
-      }
-  
-      const deckId = data.deck.toString()
-      const cardId = data.card.toString()
-      firestore.collection('decks').doc(deckId).collection('cards').doc(cardId).set({
-        ...card
-      })
-    });
+    const card :card = {
+      title: data.title.toString(),
+      desc: data.desc.toString(),
+      question: data.question.toString(),
+      answers: JSON.parse(data.answers.toString()),
+      imgUrl: signedUrls[0],
+      bucketPath: fileName
+    }
+
+    const deckId = data.deck.toString()
+    const cardId = data.card.toString()
+    await firestore.collection('decks').doc(deckId).collection('cards').doc(cardId).set({
+      ...card
+    })
   } else {
     // if no img
     const card :card = {
@@ -80,7 +79,7 @@ export default defineEventHandler(async (event) => {
 
     const deckId = data.deck.toString()
     const cardId = data.card.toString()
-    firestore.collection('decks').doc(deckId).collection('cards').doc(cardId).update({
+    await firestore.collection('decks').doc(deckId).collection('cards').doc(cardId).update({
       ...card
     })
   }

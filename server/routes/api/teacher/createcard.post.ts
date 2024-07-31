@@ -38,24 +38,23 @@ export default defineEventHandler(async (event) => {
 
   
   streamFileUpload().catch(console.error);
-  file.getSignedUrl({
+  const signedUrls = await file.getSignedUrl({
     action: 'read',
     expires: '03-09-2491',
-  }).then(signedUrls => {
+  })
     // signedUrls[0] contains the file's public URL
     
-    const card :card = {
-      title: data.title.toString(),
-      desc: data.desc.toString(),
-      question: data.question.toString(),
-      answers: JSON.parse(data.answers.toString()),
-      imgUrl: signedUrls[0],
-      bucketPath: fileName,
-    }
+  const card :card = {
+    title: data.title.toString(),
+    desc: data.desc.toString(),
+    question: data.question.toString(),
+    answers: JSON.parse(data.answers.toString()),
+    imgUrl: signedUrls[0],
+    bucketPath: fileName,
+  }
 
-    const deckId = data.deck.toString()
-    firestore.collection('decks').doc(deckId).collection('cards').doc().set({
-      ...card
-    })
-  });
+  const deckId = data.deck.toString()
+  firestore.collection('decks').doc(deckId).collection('cards').doc().set({
+    ...card
+  })
 })

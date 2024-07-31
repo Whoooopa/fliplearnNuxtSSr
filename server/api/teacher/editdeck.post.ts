@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   let prevTags: string[] = [];
   
   if(!formdata) return;
-
+  
   deckName = formdata[0].data.toString('utf-8');
   tags = JSON.parse(formdata[1].data.toString('utf-8'));
   const deckId = formdata[2].data.toString('utf-8');
@@ -32,12 +32,19 @@ export default defineEventHandler(async (event) => {
     tags: keyvalueTags,
     keywords: keywords
   })
-  
+  const type = getCookie(event,'type')
+  const headers =  new Headers({
+    "Cookie": `uid=${uid}`,
+  });
+  headers.append("Cookie", `type=${type}`);
+  const deck = await $fetch('/api/user/deck/'+deckId,
+    { headers: headers }
+  );
   firestore.collection('personalizedDecks').doc(uid).update({
     decks: FieldValue.arrayRemove({ // remove the deck object
       deckId: deckId,
-      name: prevDeckName,
-      tags: prevTags 
+      name: deck.name,
+      tags: deck.tags.sort() 
     })
   })
   firestore.collection('personalizedDecks').doc(uid).set({

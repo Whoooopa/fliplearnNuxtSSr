@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
       });
   
     }
-    streamFileUpload().catch(console.error);
+    await streamFileUpload().catch(console.error);
     const signedUrls = await file.getSignedUrl({
       action: 'read',
       expires: '03-09-2491',

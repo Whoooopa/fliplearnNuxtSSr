@@ -1,4 +1,4 @@
-import { firestore, bucket } from '../../utils/firebase';
+import { firestore, bucket } from '../../../utils/firebase';
 
 export default defineEventHandler(async (event) => {
 

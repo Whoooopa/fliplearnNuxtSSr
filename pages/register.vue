@@ -188,6 +188,7 @@ async function register() {
 
     fields.forEach((field) => {
       if (field.required){
+        console.log(field)
         submissionData.append(
               field.name,
               field.value.value

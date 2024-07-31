@@ -1,4 +1,4 @@
-import { firestore } from "../../utils/firebase"
+import { firestore } from "../../../utils/firebase"
 import { FieldPath } from 'firebase-admin/firestore';
 
 export default defineEventHandler(async (event) => {

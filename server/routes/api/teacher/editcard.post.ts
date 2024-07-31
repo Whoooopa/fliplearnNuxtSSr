@@ -1,5 +1,5 @@
-import { user } from "~/types/type";
-import { firestore, bucket } from "../../utils/firebase"
+import { card } from "~/types/type";
+import { firestore, bucket } from "../../../utils/firebase"
 import formidable from 'formidable'
 import fs from "fs";
 import stream from 'stream';
@@ -7,33 +7,30 @@ import stream from 'stream';
 
 export default defineEventHandler(async (event) => {
 
-  const uid = getCookie(event, 'uid');
-  if(!uid) return;
-
   const form = formidable({ multiples: true });
 
   const data = await new Promise((resolve, reject) => {
     form.parse(event.node.req, (err, fields, files) => {
-      if(files.img) {
+
+      if(files.img){
         const img = files.img[0]
+        
         resolve({...fields, img});
 
+      } else {
+        resolve({...fields});
       }
-      resolve({...fields});
+
     });
   });
 
-  if(data.img){
-
-    const {imgPath} = await $fetch<user>('/api/user/user',
-      { headers: {
-        'Cookie' : `uid=${uid}`
-      } }
-    );
+  if(data.img) {
+    
+    const imgPath = data.bucketPath
     if(imgPath && imgPath?.length != 0){
       bucket.file(imgPath.toString()).delete();
     }
-
+  
     const img = data.img;
     const originalFilename :string = img.originalFilename;
     const extension = originalFilename.substring(img.originalFilename.lastIndexOf('.') + 1);
@@ -49,39 +46,44 @@ export default defineEventHandler(async (event) => {
       passthroughStream.pipe(file.createWriteStream()).on('finish', () => {
         // The file upload is complete
       });
-    }
   
-    
+    }
     streamFileUpload().catch(console.error);
     file.getSignedUrl({
       action: 'read',
       expires: '03-09-2491',
     }).then(signedUrls => {
       // signedUrls[0] contains the file's public URL
-      
-      const newUserData :user = {
-        name: data.username.toString(),
+      const card :card = {
+        title: data.title.toString(),
+        desc: data.desc.toString(),
+        question: data.question.toString(),
+        answers: JSON.parse(data.answers.toString()),
         imgUrl: signedUrls[0],
+        bucketPath: fileName
       }
   
-      // console.log(data.deck.toString())
-      firestore.collection('users').doc(uid).set({
-        ...newUserData,
-        imgPath: fileName
-      }, {
-        merge: true
+      const deckId = data.deck.toString()
+      const cardId = data.card.toString()
+      firestore.collection('decks').doc(deckId).collection('cards').doc(cardId).set({
+        ...card
       })
     });
   } else {
-
-    const newUserData :user = {
-      name: data.username.toString(),
+    // if no img
+    const card :card = {
+      title: data.title.toString(),
+      desc: data.desc.toString(),
+      question: data.question.toString(),
+      answers: JSON.parse(data.answers.toString()),
     }
 
-    firestore.collection('users').doc(uid).set({
-      ...newUserData
-    }, {
-      merge: true
+    const deckId = data.deck.toString()
+    const cardId = data.card.toString()
+    firestore.collection('decks').doc(deckId).collection('cards').doc(cardId).update({
+      ...card
     })
   }
+
+  
 })

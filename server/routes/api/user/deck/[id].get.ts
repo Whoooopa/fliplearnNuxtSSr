@@ -1,5 +1,5 @@
 import { card, cardDoc } from "~/types/type";
-import { firestore } from "../../../utils/firebase"
+import { firestore } from "../../../../utils/firebase"
 
 export default defineEventHandler(async (event) => {
   

@@ -1,5 +1,5 @@
 import { card } from "~/types/type";
-import { firestore, bucket } from "../../utils/firebase"
+import { firestore, bucket } from "../../../utils/firebase"
 import formidable from 'formidable'
 import fs from "fs";
 import stream from 'stream';

@@ -1,6 +1,6 @@
-import { firestore } from '../../utils/firebase';
+import { firestore } from '../../../utils/firebase';
 import { FieldValue } from 'firebase-admin/firestore';
-import generateKeyWords from '../../utils/getKeywords';
+import generateKeyWords from '../../../utils/getKeywords';
 
 export default defineEventHandler(async (event) => {
 

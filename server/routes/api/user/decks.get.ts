@@ -1,6 +1,6 @@
 import { Query } from 'firebase-admin/firestore'
-import { firestore } from '../../utils/firebase'
-import { deck } from '../../../types/type'
+import { firestore } from '../../../utils/firebase'
+import { deck } from '../../../../types/type'
 
 export default defineEventHandler(async (event) => {
   console.log('res')

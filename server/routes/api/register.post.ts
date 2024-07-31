@@ -20,19 +20,31 @@ export default defineEventHandler(async (event) => {
   }
   // console.log(event._requestBody);
 
-  getAuth(app)
-    .createUser({
-      email: email,
+  try {
+    // Create a new user in Firebase Auth
+    const userRecord = await getAuth(app).createUser({
+      email,
       emailVerified: false,
-      password: password,
+      password,
       displayName: name
-    }).then(documentReference => {
-      
-      firestore.collection('users')
-       .doc(documentReference.uid).set({
-          name: name,
-          account_type: account_type
-       })
-    })
+    });
+
+    // Store additional user information in Firestore
+    await firestore.collection('users').doc(userRecord.uid).set({
+      name,
+      account_type
+    });
+
+    return {
+      status: 'success',
+      uid: userRecord.uid
+    };
+
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return {
+      status: 'error'
+    };
+  }
   
 })

@@ -162,7 +162,7 @@ watch(
   }
 )
 
-
+const router = useRouter();
 const publicStore = usePublicStore();
 
 async function register() {
@@ -198,12 +198,13 @@ async function register() {
     submissionData.append(
       "account_type", accountType.value
     )
-    console.log(submissionData);
     
-
-    publicStore.register(submissionData);
+    await publicStore.register(submissionData);
+    alert('Account Created, Please Login')
+    router.push('/login');
   } 
   catch (e){
+    alert(e);
     console.log(e);
   }
 }

@@ -7,13 +7,13 @@
           class="w-full h-full object-contain rounded-md bg-white cursor-pointer hover:opacity-70" />
         </div>
       </div>
-      <p class="p-2 md:text-2xl font-semibold line-clamp-3 w-64" v-if="!isQuestion">
+      <p class="p-2 md:text-2xl font-semibold overflow-y-auto w-64 h-16" v-if="!isQuestion">
         {{ prevTitle }}
       </p>
-      <p class="p-2 px-4 md:text-lg font-medium w-64" v-else>
+      <p class="p-2 px-4 md:text-lg font-medium w-64 overflow-y-auto" v-else>
         {{ prevQuestion }}
       </p>
-      <p class="px-4 line-clamp-4 w-64" v-if="!isQuestion">
+      <p class="px-4 overflow-y-auto w-64 h-40" v-if="!isQuestion">
         {{ prevDesc }}
       </p>
       <div class="flex flex-col gap-1 items-center" v-else>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen flex flex-row bg-white">
+  <div class="w-screen md:h-screen h-h-[calc(100vh-5rem)] flex flex-row bg-white">
     <div class="w-48 h-full flex-col pt-5 bg-customPrimary-50 md:flex hidden">
       <span class="pl-8 text-2xl font-bold text-slate-700">Filter</span>
       <div class="border-b-[0.5px] border-b-slate-500 w-5/6 self-center my-4"></div>
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="w-full h-full flex-col">
+    <div class="w-full h-[calc(100vh-10rem)] flex-col">
       <div class="w-full h-20 bg-customPrimary-300 flex items-center px-8">
         <UInput class="w-full"
         :ui="{ icon: { trailing: { pointer: '' } } }"
@@ -29,15 +29,17 @@
               <Icon name="i-mdi:magnify" class="w-8 h-8 text-white" @click="handleSearch"/>
               <div class="border-r-2 border-r-softbackground cursor-pointer">
               </div>
-            <Icon name="i-material-symbols:filter-alt-outline" class="w-8 h-8 text-white cursor-pointer" @click="modalFilter = ! modalFilter"/>
-              <div class="border-r-2 border-r-softbackground cursor-pointer">
+              <div class="md:hidden">
+                <Icon name="i-material-symbols:filter-alt-outline" class="w-8 h-8 text-white cursor-pointer" @click="modalFilter = ! modalFilter"/>
+              </div>
+              <div class="md:hidden border-r-2 border-r-softbackground cursor-pointer">
               </div>
               <Icon name="i-material-symbols:close" class="w-8 h-8 text-white cursor-pointer" @click="inputQuery = ''"/>
             </div>
             </template>
         </UInput>
       </div>
-      <div class="w-full h-[calc(100%-5rem)] flex flex-col p-6 overflow-y-auto gap-6" v-if="decks?.length">
+      <div class="w-full h-[calc(100vh-10rem)] flex flex-col p-6 overflow-y-auto gap-6" v-if="decks?.length">
         <Deck v-for="deck in decks" :key="deck.id"
         :id="deck.id"
         :owner="deck.owner"

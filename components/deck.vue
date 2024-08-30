@@ -17,7 +17,8 @@
         @click="openModal = true"/>
       </div>
       <Teleport to="body" v-if="openModal">
-        <DeckModal 
+        <DeckModal
+        class="absolute bottom-0"
         :id="id"
         @close-modal="openModal = false"
         />

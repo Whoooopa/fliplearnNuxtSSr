@@ -1,6 +1,6 @@
 <template>
   <div class="w-screen h-screen flex justify-center items-center">
-    <ReusableCardlayout>
+    <ReusableCardlayout class="md:block hidden">
       <div 
       class="flex items-center mt-5 h-full flex-col"
       v-if="dataLoaded">
@@ -33,6 +33,39 @@
         This deck have no cards
       </div>
     </ReusableCardlayout>
+    <div class="md:hidden block w-full h-full">
+      <div 
+      class="flex items-center mt-5 h-full flex-col"
+      v-if="dataLoaded">
+        <div>{{ 1 + mainCarousel + " of " + data?.cards?.length }}</div>
+        <V3Carousel
+          ref="myCarousel" 
+          class="w-[95%] h-2/3 min-h-[25rem]"
+          v-model="mainCarousel">
+            <V3Slide v-for="(cardDoc) in data?.cards" :key="cardDoc.docId" class="relative flex flex-col gap-y-5">
+              <CardPreview
+              :key="cardDoc.card.imgUrl"
+              :prevTitle="cardDoc.card.title"
+              :prevDesc="cardDoc.card.desc"
+              :prevQuestion="cardDoc.card.question"
+              :prevAnswers="cardDoc.card.answers"
+              :prevUrl="cardDoc.card.imgUrl"
+              :prevId="cardDoc.docId"
+              />
+            </V3Slide>
+            <template #addons>
+              <V3Navigation/>
+            </template>
+        </V3Carousel>
+        <button
+        @click="handleQuiz">Start Quiz</button>
+      </div>
+      <div 
+      class="flex justify-center items-center h-full"
+      v-else>
+        This deck have no cards
+      </div>
+    </div>
   </div>
 </template>
 

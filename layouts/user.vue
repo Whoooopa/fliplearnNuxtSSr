@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row">
+  <div class="flex md:flex-row flex-col">
     <NavigationUser />
     <slot />
   </div>

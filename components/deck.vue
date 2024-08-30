@@ -4,12 +4,12 @@
       <span class="text-2xl">
         {{ name }}
       </span>
-      <div class="mt-2 w-full flex flex-row overflow-x-auto gap-2">
+      <div class="mt-2 w-40 flex flex-row overflow-x-auto gap-2">
         <ReusableTag v-for="tag in tags?.sort()" :tag="tag.toString()" />
       </div>
     </div>
     <div class="w-1/2 relative flex flex-row justify-end items-end pr-10">
-      <div class="w-20 h-10 flex flex-row justify-between absolute top-0 right-0">
+      <div class="w-20 h-10 flex flex-row justify-end absolute top-0 right-0">
         <Icon name="i-material-symbols:add" class="w-8 h-8 cursor-pointer"  
         @click="handleAddToPersonalizedDecks"
         v-if="type == 'student'"/>

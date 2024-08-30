@@ -1,9 +1,9 @@
 <template>
 
-  <div class="h-screen flex flex-row">
-    <div class="w-1/2 flex justify-center items-center bg-white">
+  <div class="h-screen flex md:flex-row flex-col">
+    <div class="md:w-1/2 md:h-full h-1/2 flex justify-center items-center bg-white">
       <CardPreview 
-      
+      :class="'md:scale-100 scale-[65%] md:mb-0 -mb-16'"
        :prevTitle="quizData.prevTitle"
        :prevDesc="quizData.prevDesc"
        :prevQuestion="quizData.prevQuestion"
@@ -11,7 +11,7 @@
        :prevUrl="quizData.prevUrl"
       />
     </div>
-    <div class="w-1/2 flex justify-center items-center">
+    <div class="md:w-1/2 md:h-full h-1/2 flex justify-center items-center">
       <form class="flex flex-col gap-2" @submit.prevent="register">
           <div v-for="field in fields" :key="field.name" class="w-80">
             <UInput v-model="field.value.value" 
@@ -56,8 +56,9 @@
 </template>
 
 <script lang="ts" setup>
+const route = useRoute();
 const accountTypes = ['teacher','student'];
-const accountType = ref(accountTypes[1]);
+const accountType = ref(route.query.type ?? accountTypes[1]);
 
 const quizData = {
         prevTitle: "Cell Structure",

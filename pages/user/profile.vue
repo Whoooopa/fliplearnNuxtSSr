@@ -7,13 +7,13 @@
           <USkeleton class="w-80 h-12"/>
         </div>
         <span 
-        class="text-4xl font-medium"
+        class="lg:text-4xl md:text-2xl text-xl font-medium"
         v-else>
           Welcome back,  {{ user.name }}
         </span>
         <div class="w-5/6 h-0.5 bg-slate-600 mt-5"></div>
 
-        <form class="w-full flex flex-col mt-10 justify-between h-4/5">
+        <form class="w-full flex flex-col mt-10 md:pb-5 pb-14 justify-between h-4/5">
           <div class="w-full flex flex-row md:gap-20">
             <div class="w-40 h-40">
               <label for="upload-photo" class="w-full h-full">
@@ -22,7 +22,7 @@
                   class="w-full h-full object-contain rounded-full cursor-pointer hover:opacity-70" v-if="dataLoaded"/>
                 </div>
               </label>
-              <input type="file" class="absolute -z-10 opacity-0" id="upload-photo" accept="image/*" v-on:change="onFileChange" />
+              <input type="file" class="absolute -z-10 opacity-0 w-1" id="upload-photo" accept="image/*" v-on:change="onFileChange" />
             </div>
             <div class="flex flex-col justify-center">
               <UInput v-model="name" 

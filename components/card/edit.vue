@@ -8,10 +8,10 @@
             class="w-full h-full object-contain rounded-md bg-white cursor-pointer hover:opacity-70" />
           </div>
         </label>
-        <input type="file" class="absolute -z-10 opacity-0" :id="prevId" accept="image/*" v-on:change="onFileChange"/>
+        <input type="file" class="absolute -z-10 opacity-0 w-1" :id="prevId" accept="image/*" v-on:change="onFileChange"/>
       </div>
       <div class="p-2 md:text-2xl font-semibold h-14" v-if="!isQuestion">
-        <input placeholder="Enter a title" class="px-0" v-model="title" @input="emitData" />
+        <input placeholder="Enter a title" class="lg:px-0 w-[95%]" v-model="title" @input="emitData" />
       </div>
       <div class="p-2 px-4 md:text-lg font-medium" v-else>
         <textarea placeholder="Write a question" class="w-full" v-model="question"  @input="emitData"/>

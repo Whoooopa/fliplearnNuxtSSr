@@ -8,7 +8,7 @@
             <V3Carousel
             ref="myCarousel" 
             id="gallery" 
-            class="w-[600px] h-64"
+            class="lg:w-[600px] w-[95%] h-64"
             v-model="mainCarousel"
             @slide-start="setGallery">
               <V3Slide v-for="cardDoc in currentCards" :key="cardDoc.docId" class="relative flex flex-col gap-y-5">
@@ -24,7 +24,7 @@
                 :reset-data="resetData"
                 @update="updateCardData"
                 />
-                <div class="absolute top-1/2 right-10 p-2 bg-secondary rounded-md cursor-pointer"
+                <div class="absolute md:top-1/2 top-1/4 md:right-10 right-2 p-2 bg-secondary rounded-md cursor-pointer"
                 @click="cardDoc.card.isQuestion = !cardDoc.card.isQuestion">
                   <Icon name="i-material-symbols:360" class="w-8 h-8" />
                 </div>
@@ -37,7 +37,7 @@
             </V3Carousel>
             <V3Carousel
               id="thumbnails"
-              class="w-[800px] h-52 mt-40 z-10 "
+              class="w-[800px] h-52 mt-40 z-10 lg:block hidden"
               :items-to-show="4"
               :wrap-around="false"
               :mouseDrag="false"
@@ -54,6 +54,58 @@
                 :prev-url="cardDoc.card.imgUrl"
                 @click="slideTo(index)"
                 class="cursor-pointer"
+                />
+                
+              </V3Slide>
+              <template #addons>
+                <V3Navigation />
+              </template>
+            </V3Carousel>
+            <V3Carousel
+              id="thumbnails"
+              class="w-[65%] h-52 mt-40 z-10 lg:hidden md:block hidden"
+              :items-to-show="2.8"
+              :wrap-around="false"
+              :mouseDrag="false"
+              :touchDrag="false"
+              v-model="thumbnailCarousel"
+              ref="carousel"
+            >
+              <V3Slide v-for="(cardDoc, index) in currentCards" :key="cardDoc.docId" class="-mt-16">
+                <CardPreview
+                :prev-title="cardDoc.card.title"
+                :prev-desc="cardDoc.card.desc"
+                :prev-question="cardDoc.card.question"
+                :prev-answers="cardDoc.card.answers"
+                :prev-url="cardDoc.card.imgUrl"
+                @click="slideTo(index)"
+                class="cursor-pointer transform scale-75"
+                />
+                
+              </V3Slide>
+              <template #addons>
+                <V3Navigation />
+              </template>
+            </V3Carousel>
+            <V3Carousel
+              id="thumbnails"
+              class="w-[95%] h-52 mt-40 z-10 lg:hidden md:hidden block"
+              :items-to-show="2"
+              :wrap-around="false"
+              :mouseDrag="false"
+              :touchDrag="false"
+              v-model="thumbnailCarousel"
+              ref="carousel"
+            >
+              <V3Slide v-for="(cardDoc, index) in currentCards" :key="cardDoc.docId" class="-mt-16">
+                <CardPreview
+                :prev-title="cardDoc.card.title"
+                :prev-desc="cardDoc.card.desc"
+                :prev-question="cardDoc.card.question"
+                :prev-answers="cardDoc.card.answers"
+                :prev-url="cardDoc.card.imgUrl"
+                @click="slideTo(index)"
+                class="cursor-pointer transform scale-75"
                 />
                 
               </V3Slide>
@@ -387,8 +439,10 @@ const tryDelete = ref(false);
   padding: 5px;
 }
 
-#gallery .carousel__viewport {
-  perspective: 600px;
+@media (min-width: 1024px) {
+  #gallery .carousel__viewport {
+    perspective: 600px;
+  }
 }
 
 #gallery .carousel__track {
@@ -432,9 +486,12 @@ const tryDelete = ref(false);
   padding: 5px;
 }
 
-#thumbnails .carousel__viewport {
-  perspective: 800px;
+@media (min-width: 1024px) {
+  #thumbnails .carousel__viewport {
+    perspective: 800px;
+  }
 }
+
 
 #thumbnails .carousel__slide--sliding {
   transition: 0.5s;

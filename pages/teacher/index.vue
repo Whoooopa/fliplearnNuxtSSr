@@ -1,7 +1,7 @@
 <template>
-  <div class="w-screen h-screen p-10 flex flex-col gap-4 items-center">
+  <div class="w-screen h-screen md:p-10 pt-10 flex flex-col gap-4 items-center">
     <span class="text-4xl">My Decks</span>
-    <ReusableCardlayout>
+    <ReusableCardlayout class="md:block hidden">
       <SkeletonDeck
       v-if="!dataLoaded"
       />
@@ -25,6 +25,31 @@
       @modal-confirmation="handleModal"
       />
     </ReusableCardlayout>
+    <div class="md:hidden block w-full h-full">
+      <SkeletonDeck
+      v-if="!dataLoaded"
+      />
+      <Decks
+      class="w-full h-full"
+      v-else-if="serverData?.length" 
+      :data="serverData"
+      @edit-deck="handleEditDeck"
+      @delete-deck="handleDeleteDeck"
+      />
+      <div 
+      class="flex flex-col gap-10 w-full h-full justify-center items-center"
+      v-else>
+        <span>No Deck</span>
+        <button class="h-10 py-2 px-4" type="button" @click="navigateTo('/teacher/createdeck')">Create Deck</button>
+      </div>
+      <ReusableModal
+      prompt="Are you sure ?"
+      action="Delete"
+      action2="Cancel"
+      v-if="tryDelete"
+      @modal-confirmation="handleModal"
+      />
+    </div>
 </div>
 </template>
 

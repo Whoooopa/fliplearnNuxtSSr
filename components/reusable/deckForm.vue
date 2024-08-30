@@ -1,16 +1,16 @@
 <template>
-  <div class="flex flex-row h-5/6">
-    <div class="w-1/2 h-full flex flex-col justify-center gap-16 ml-20">
-      <div class="flex flex-col gap-5 mt-24">
-        <label for="name" class="text-2xl">Choose a name for your deck :</label>
-        <UInput id="name" class="w-80 rounded-md" size="xl" v-model="deckName" />
+  <div class="flex lg:flex-row flex-col h-5/6">
+    <div class="lg:w-1/2 w-full lg:h-full h-3/4 flex flex-col justify-center lg:gap-16 gap-4 lg:pl-20 pl-8">
+      <div class="flex flex-col gap-5 lg:mt-24 mt-10">
+        <label for="name" class="lg:text-2xl md:text-lg text-sm">Choose a name for your deck :</label>
+        <UInput id="name" class="lg:w-80 md:w-80 w-60 rounded-lg" size="xl" v-model="deckName" />
         <span aria-live="polite" aria-atomic="true" class="text-red-600" v-if="!deckLength && errors && !!errors[0].error.length">
           {{ errors[0].error }}
         </span>
       </div>
       <div class="flex flex-col gap-5">
-        <label for="tag" class="text-2xl">Create a new tag :</label>
-        <UInput id="tag" class="w-80 rounded-md" size="xl" v-model="tagName"
+        <label for="tag" class="lg:text-2xl md:text-lg text-sm">Create a new tag :</label>
+        <UInput id="tag" class="lg:w-80 md:w-80 w-60 rounded-lg" size="xl" v-model="tagName"
         :ui="{ icon: { trailing: { pointer: '' } } }">
           <template #trailing>
             <Icon name="i-material-symbols:add" class="w-8 h-8" @click="handleAddTag" />
@@ -20,17 +20,17 @@
           {{ errors[1].error }}
         </span>
       </div>
-      <div class="w-80 h-40 rounded-md flex flex-row flex-wrap gap-x-10 overflow-y-auto">
-        <div v-for="tag in selectedTags.tags" class="h-10 flex justify-center items-center px-3 rounded-md cursor-pointer my-2"
+      <div class="lg:w-80 md:w-full w-60 h-40 rounded-lg flex flex-row flex-wrap gap-x-10 overflow-y-auto">
+        <div v-for="tag in selectedTags.tags" class="h-10 flex justify-center items-center px-3 rounded-lg cursor-pointer my-2"
         @click="toggleActive(tag)" :class="tag.selected? 'bg-tagTosca': 'bg-softshade'">
           <span>{{ tag.name }}</span>
         </div>
       </div>
     </div>
-    <div class="w-1/2 h-full flex flex-col gap-12 justify-center">
-      <div class="text-2xl">Browse available tags</div>
-      <div class="w-3/4 h-80 bg-softbackground rounded-md flex flex-row flex-wrap gap-x-10 p-8 overflow-y-auto shadow-inner">
-        <div v-for="tag in tags.tags" class="h-10 flex justify-center items-center px-3 rounded-md cursor-pointer my-2"
+    <div class="lg:w-1/2 w-full lg:h-full h-1/4 flex flex-col lg:gap-12 gap-4 justify-center items-center">
+      <div class="lg:text-2xl md:text-lg text-sm">Browse available tags</div>
+      <div class="w-3/4 h-80 bg-softbackground rounded-lg flex flex-row flex-wrap gap-x-10 p-8 overflow-y-auto shadow-inner">
+        <div v-for="tag in tags.tags" class="h-10 flex justify-center items-center px-3 rounded-lg cursor-pointer my-2"
         @click="toggleActive(tag)" :class="tag.selected ? 'bg-tagTosca': 'bg-softshade'">
           <span>{{ tag.name }}</span>
         </div>

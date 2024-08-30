@@ -5,8 +5,12 @@
         We aim to leverage your learning experience to the best it can be
       </span>
       <div class="flex flex-row gap-5 md:justify-start justify-center">
-        <button>Learn More</button>
-        <button>Join Us</button>
+        <NuxtLink to="/about">
+          <button>Learn More</button>
+        </NuxtLink>
+        <NuxtLink to="/register">
+          <button>Join Us</button>
+        </NuxtLink>
       </div>
     </div>
   </div>

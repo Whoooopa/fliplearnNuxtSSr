@@ -11,5 +11,6 @@ export const useMyUserStore = defineStore({
     quizCurrentProgress: 0,
     quizTotalPoints: 0
   }),
-  actions: {}
+  actions: {},
+  persist: true
 })
